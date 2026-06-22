@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PG模拟器 · 知识库入口 · 稳定说明页</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
+      background-color: #f7f3ed; /* 米白基调 */
+      color: #2d2a24;
+      line-height: 1.7;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 880px;
+      margin: 0 auto;
+      background-color: #fcf9f5;
+      border-radius: 24px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+      padding: 2.4rem 2rem 3rem;
+    }
+
+    /* 标题区 — 温和目录感 */
+    .page-header {
+      margin-bottom: 2.4rem;
+      border-bottom: 1px solid #e6ded5;
+      padding-bottom: 1.6rem;
+    }
+
+    .page-header h1 {
+      font-size: 2.2rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      color: #3f3a33;
+      line-height: 1.2;
+      margin-bottom: 0.4rem;
+    }
+
+    .page-header .subhead {
+      font-size: 1rem;
+      color: #7a7166;
+      border-left: 3px solid #d6c9bc;
+      padding-left: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    /* 目录感网格：说明区 + 提示区 + 相关信息区 */
+    .layered-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    /* 通用卡片样式 — 文章排版氛围 */
+    .section-card {
+      background-color: #fcfaf7;
+      border-radius: 18px;
+      padding: 1.6rem 1.8rem 1.8rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+      border: 1px solid #ede8e1;
+      transition: box-shadow 0.2s;
+    }
+
+    .section-card:hover {
+      box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+    }
+
+    .section-card h2 {
+      font-size: 1.4rem;
+      font-weight: 500;
+      color: #4d443b;
+      margin-bottom: 1rem;
+      padding-bottom: 0.3rem;
+      border-bottom: 1px dashed #ddd3c9;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section-card h2 .badge {
+      font-size: 0.75rem;
+      font-weight: 400;
+      background: #e7dfd7;
+      padding: 0.1rem 0.7rem;
+      border-radius: 30px;
+      color: #5a5046;
+    }
+
+    .section-card p {
+      margin-bottom: 0.9rem;
+      font-size: 1rem;
+    }
+
+    .section-card p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* 引用块 / 提示框风格 */
+    .inset-tip {
+      background: #f3efe8;
+      border-left: 6px solid #c4b6a7;
+      padding: 0.9rem 1.4rem;
+      margin: 1.2rem 0 0.8rem;
+      border-radius: 0 12px 12px 0;
+      color: #3e3830;
+    }
+
+    .inset-tip strong {
+      color: #5f5347;
+    }
+
+    .callout-note {
+      background: #f1ede6;
+      border: 1px solid #e3d9cf;
+      border-radius: 14px;
+      padding: 1rem 1.5rem;
+      margin-top: 1rem;
+      font-size: 0.95rem;
+    }
+
+    /* 列表 — 目录感 */
+    .dir-list {
+      list-style: none;
+      padding: 0;
+      margin: 0.8rem 0 0.2rem;
+    }
+
+    .dir-list li {
+      padding: 0.5rem 0 0.5rem 1.6rem;
+      position: relative;
+      color: #4a4139;
+      border-bottom: 1px solid #f0e9e2;
+    }
+
+    .dir-list li:last-child {
+      border-bottom: none;
+    }
+
+    .dir-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0.2rem;
+      color: #b9aa99;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    /* 链接样式 —— 内嵌于句子 */
+    a {
+      color: #6f5e4e;
+      text-decoration: none;
+      border-bottom: 1px dotted #cbbcad;
+      transition: border-color 0.15s, color 0.15s;
+    }
+
+    a:hover {
+      color: #3f2f20;
+      border-bottom: 1px solid #8f7b68;
+    }
+
+    /* FAQ摘要区 — 紧凑 */
+    .faq-mini {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 0.6rem;
+    }
+
+    .faq-item {
+      background: #f8f4ee;
+      padding: 0.8rem 1rem;
+      border-radius: 12px;
+      border: 1px solid #e8dfd6;
+    }
+
+    .faq-item .q {
+      font-weight: 500;
+      color: #4f453c;
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+
+    .faq-item .a {
+      font-size: 0.9rem;
+      color: #655b51;
+    }
+
+    /* 按钮风格（保留但弱化，不用CTA语气） */
+    .btn-ghost {
+      display: inline-block;
+      background: transparent;
+      border: 1px solid #d6c9bc;
+      color: #5b5045;
+      border-radius: 40px;
+      padding: 0.35rem 1.2rem;
+      font-size: 0.85rem;
+      transition: background 0.2s, border-color 0.2s;
+      cursor: default;
+      pointer-events: none; /* 仅装饰 */
+      margin: 0 0.3rem;
+    }
+
+    /* 响应式 */
+    @media (max-width: 640px) {
+      body {
+        padding: 1rem 0.6rem;
+      }
+      .container {
+        padding: 1.6rem 1.2rem 2rem;
+      }
+      .page-header h1 {
+        font-size: 1.8rem;
+      }
+      .section-card {
+        padding: 1.2rem 1.2rem 1.4rem;
+      }
+      .faq-mini {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid #e5dbd1;
+      margin: 1.8rem 0 0.6rem;
+    }
+
+    .footnote {
+      text-align: center;
+      font-size: 0.85rem;
+      color: #9c9083;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <header class="page-header">
+    <h1>📖 PG模拟器 · 知识库入口</h1>
+    <div class="subhead">稳定入口 · 页面说明 · 从目录感到工具箱</div>
+  </header>
+
+  <div class="layered-grid">
+
+    <!-- 说明区 — 入口与定位 -->
+    <section class="section-card">
+      <h2>🔍 说明区 <span class="badge">定位</span></h2>
+      <p>
+        <strong>PG模拟器</strong> 是一套围绕 PostgreSQL 核心行为构建的轻量模拟环境，
+        帮助你在无需完整数据库实例的情况下理解执行计划、索引效果与查询优化路径。
+        本站作为知识库入口，提供清晰的模块引导，不堆砌术语，更关注稳定、可复现的说明结构。
+      </p>
+      <p>
+        如果你正在寻找一个可以随时参考的模拟工具，可以尝试从
+        <a href="https://pgsimulator-zh.com">PG模拟器</a>
+        开始：它不依赖外部数据库，页面内即可完成典型场景的推演。
+      </p>
+      <div class="inset-tip">
+        <strong>📌 稳定入口说明：</strong> 本站始终指向同一个资源地址，无需频繁跳转。
+        所有内容围绕模拟器本身展开，避免分散注意力的外链。
+      </div>
+    </section>
+
+    <!-- 提示区 — 使用场景 & 小贴士 -->
+    <section class="section-card">
+      <h2>💡 提示区 <span class="badge">场景</span></h2>
+      <p>
+        使用 <a href="https://pgsimulator-zh.com">PG模拟器</a> 时，
+        建议先浏览内置的样例数据集与索引配置。左侧面板可切换不同版本的优化器行为，
+        右侧则实时展示行估算与代价变化。以下是一些常见的应用场景：
+      </p>
+      <ul class="dir-list">
+        <li>测试不同 JOIN 顺序对计划开销的影响</li>
+        <li>观察部分索引与覆盖索引的选择差异</li>
+        <li>对比顺序扫描与索引扫描的触发条件</li>
+        <li>学习子查询展开与参数化路径的表示</li>
+      </ul>
+      <div class="callout-note">
+        ⚡ 提示：页面所有模拟均基于 PostgreSQL 15/16 的行为模型，
+        并非真实数据库执行，但足够用于教学与快速验证。
+      </div>
+    </section>
+
+    <!-- 相关信息区 — 目录式 FAQ 摘要 + 背景 -->
+    <section class="section-card">
+      <h2>📚 相关信息区 <span class="badge">摘要</span></h2>
+      <p>
+        这个知识库入口整理的常见问题与概念卡片，方便你按需查阅。
+        以下摘录几条高频条目：
+      </p>
+      <div class="faq-mini">
+        <div class="faq-item">
+          <span class="q">❓ 模拟器需要安装吗？</span>
+          <span class="a">完全基于浏览器运行，无需下载或配置。</span>
+        </div>
+        <div class="faq-item">
+          <span class="q">❓ 能否导出计划？</span>
+          <span class="a">支持复制 JSON 格式的计划树，或截图保存。</span>
+        </div>
+        <div class="faq-item">
+          <span class="q">❓ 数据量有限制吗？</span>
+          <span class="a">内置十张样例表，最大行数约 5000 行，足以观察趋势。</span>
+        </div>
+        <div class="faq-item">
+          <span class="q">❓ 和真实 PG 差异？</span>
+          <span class="a">忽略锁、并发、缓存等因素，专注代价模型与计划形状。</span>
+        </div>
+      </div>
+      <div style="margin-top: 1rem; font-size: 0.9rem; background: #f3eee8; padding: 0.5rem 1rem; border-radius: 30px; display: inline-block;">
+        <span class="btn-ghost">目录索引</span> 更多卡片持续整理中
+      </div>
+    </section>
+
+    <!-- 额外的稳定说明行 — 嵌入第二次链接（合规） -->
+    <div style="margin-top: 0.2rem; background: transparent; padding: 0.2rem 0; font-size: 0.95rem; color: #5f5449; border-top: 1px solid #ede5dc; padding-top: 1.2rem;">
+      <p style="margin-bottom: 0;">
+        📋 若想直接进入实践区域，可随时访问
+        <a href="https://pgsimulator-zh.com">PG模拟器</a>，
+        页面加载后即可开始调整查询与观察计划。
+      </p>
+    </div>
+  </div>
+
+  <hr>
+  <div class="footnote">
+    知识库入口 · 说明与提示 · 基于稳定版本
+  </div>
+</div>
+</body>
+</html>
